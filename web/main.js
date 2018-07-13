@@ -120,7 +120,7 @@ function stringToIndexes(array) {
     if (randomNumber.includes(Number(word))) {
       word = 'N';
     }
-    if (word === 'what' || word === 'why' || word === 'how' || word === 'whose' || word === 'when' || word === 'whom' || word === 'which' || word === 'where') {
+    if (word === 'what' || word === 'why' || word === 'who' || word === 'how' || word === 'whose' || word === 'when' || word === 'whom' || word === 'which' || word === 'where') {
       isQuestion = true;
     }
     if (word === '.' || word === '?') {
