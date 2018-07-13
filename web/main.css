@@ -94,7 +94,7 @@ input[type="text"] {
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 430px) {
   .button-text {
     margin: 3px;
   }
