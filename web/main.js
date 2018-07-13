@@ -1,4 +1,5 @@
 let surface;
+let mdcTextField;
 let textField;
 let topAppBar;
 let drawer;
@@ -6,7 +7,7 @@ let model;
 let words = [];
 let isQuestion = false;
 let progressBar;
-let randomNumber;
+let randomNumber = [];
 let modelLoading;
 let btns;
 let textInput;
@@ -17,22 +18,20 @@ window.onload = async function (e) {
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js')
-      .then(function (response) {
-        // Service worker registration done
-        console.log('Registration Successful', response);
+      .then(function () {
+        console.log('Registration Successful');
       }, function (error) {
-        // Service worker registration failed
         console.log('Registration Failed', error);
       });
   }
-
+  textField = this.document.querySelector('.mdc-text-field');
   notice = this.document.querySelector('#notice');
   textInput = this.document.querySelector('#text-input');
   btns = this.document.querySelector('.btns');
   modelLoading = this.document.querySelector('#model-loading');
   modelLoading.style.display = 'block';
   btns.style.display = 'none';
-  textInput.style.display = 'none';
+  textField.style.display = 'none';
   progressBar = this.document.querySelector('#progressBar');
   for (let i = 0; i < 9; i++) {
     words[i] = this.document.querySelector(`#word${i + 1}`);
@@ -41,7 +40,8 @@ window.onload = async function (e) {
   surface.forEach(surf => {
     mdc.ripple.MDCRipple.attachTo(surf);
   });
-  textField = new mdc.textField.MDCTextField(this.document.querySelector('.mdc-text-field'));
+
+  mdcTextField = new mdc.textField.MDCTextField(textField);
   topAppBar = new mdc.topAppBar.MDCTopAppBar(this.document.querySelector('#app-bar'));
   drawer = new mdc.drawer.MDCTemporaryDrawer(this.document.querySelector('#drawer'));
   this.document.querySelector('#menu').addEventListener('click', () => drawer.open = true);
@@ -49,45 +49,39 @@ window.onload = async function (e) {
   model = await tf.loadModel('/web_model/model.json');
   notice.style.display = 'block';
   modelLoading.style.display = 'none';
-  await loadBtns();
+  await predictNextWord(mdcTextField.value.trim());
+  textInput.selectionStart = textInput.selectionEnd = textInput.value.length;
+  textInput.scrollLeft = textInput.scrollWidth;
+  mdcTextField.foundation_.activateFocus();
   btns.style.display = 'grid';
-  textInput.style.display = 'block';
+  textField.style.display = 'block';
   progressBar.style.display = 'none';
   return e;
 };
 
-
-async function loadBtns() {
-  words.forEach(element => {
-    element.innerHTML = reversed_dictionary[Math.floor(Math.random() * 10000)];
-  });
-}
 
 
 async function predictNextWord(str) {
   isQuestion = false;
   str = str.toLowerCase();
   str = str.split(' ');
-  if (str.length >= 3) {
+  let input = stringToIndexes(str);
+  if (input.length >= 3) {
     notice.style.display = 'none';
-    str = str.slice(-3);
-    let input = await stringToIndexes(str);
-    let prediction = await model.predict(tf.tensor(input));
-    prediction = await prediction.buffer();
-    prediction = prediction.values.slice(20000, 30000);
+    input = input.slice(-3);
+    let prediction = await model.predict(tf.tensor([input]));
+    prediction = await prediction.data();
+    prediction = prediction.slice(20000, 30000);
     prediction = await indexesToString(prediction, 9);
-    return prediction;
+    for (let i = 0; i < 9; i++) {
+      words[i].innerHTML = prediction[i];
+    }
   } else {
     notice.style.display = 'block';
     await loadBtns();
-    return null;
   }
 }
 
-async function stringToIndexes(str) {
-  let arrayOfIndexes = await formatString(str);
-  return [arrayOfIndexes];
-}
 
 async function indexesToString(prediction, numPredictions) {
   let arrOfIndex = [];
@@ -106,18 +100,25 @@ async function indexesToString(prediction, numPredictions) {
         word = '?';
       }
     }
+    if (word === 'N') {
+      randomNumber.push(Math.floor(Math.random() * 1000));
+      word = randomNumber[Math.floor(Math.random() * randomNumber.length)];
+    }
     if (word === '<unk>') {
-      word = 'rareWord';
+      word = 'rareword';
     }
     arrOfString.push(word);
   });
   return arrOfString;
 }
 
-async function formatString(array) {
+function stringToIndexes(array) {
   let _ = [];
   array.forEach(word => {
-    if (Number(word) === randomNumber) {
+    if (word === 'rareword') {
+      word = '<unk>';
+    }
+    if (randomNumber.includes(Number(word))) {
       word = 'N';
     }
     if (word === 'what' || word === 'why' || word === 'how' || word === 'whose' || word === 'when' || word === 'whom' || word === 'which' || word === 'where') {
@@ -133,32 +134,22 @@ async function formatString(array) {
     } else {
       _.push(dictionary[word]);
     }
-    console.log(word);
   });
   return _;
 }
 
 async function getValues() {
-  textField.value = textField.value.toLowerCase();
-  let prediction = await predictNextWord(textField.value.trim());
-  if (prediction !== null) {
-    for (let i = 0; i < 9; i++) {
-      words[i].innerHTML = prediction[i];
-      if (prediction[i] === 'N') {
-        words[i].innerHTML = randomNumber = Math.floor(Math.random() * 1000);
-      }
-    }
-  }
-  textInput.focus();
-  textInput.scrollLeft = textInput.scrollWidth;
+  mdcTextField.value = mdcTextField.value.toLowerCase();
+  await predictNextWord(mdcTextField.value.trim());
 }
 
 async function setText(text) {
+  textFieldValue = mdcTextField.foundation_.getValue();
   text = " " + text;
-  textField.value.trim();
-  textField.value += text;
-  textField.value.trim();
-  textInput.focus();
+  textFieldValue += text;
+  mdcTextField.foundation_.setValue(textFieldValue);
+  textInput.selectionStart = textInput.selectionEnd = textInput.value.length;
   textInput.scrollLeft = textInput.scrollWidth;
-  getValues();
+  mdcTextField.foundation_.activateFocus();
+  await getValues();
 }

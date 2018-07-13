@@ -75,9 +75,9 @@
   </aside>
 
   <main class="content">
-    <div id="text-input" class="mdc-text-field mdc-text-field--fullwidth" style="display: none;">
-      <input class="mdc-text-field__input" type="text" placeholder="Enter atleast 3 word" aria-label="Enter atleast 3 word" autofocus
-        oninput="getValues();">
+    <div class="mdc-text-field mdc-text-field--fullwidth" style="display: none;">
+      <input id="text-input" class="mdc-text-field__input" value="i am the" type="text" placeholder="Enter atleast 3 word" aria-label="Enter atleast 3 word"
+        autofocus oninput="getValues();">
       <div class="mdc-line-ripple"></div>
     </div>
 
@@ -88,15 +88,15 @@
 
 
     <div class="btns" style="display: none;">
-      <button class="mdc-button ripple-surface button-text" id="word1" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word2" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word3" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word4" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word5" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word6" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word7" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word8" onclick="setText(this.innerHTML);"></button>
-      <button class="mdc-button ripple-surface button-text" id="word9" onclick="setText(this.innerHTML);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word1" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word2" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word3" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word4" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word5" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word6" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word7" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word8" onclick="setText(this.innerText);"></button>
+      <button class="mdc-button ripple-surface button-text" id="word9" onclick="setText(this.innerText);"></button>
     </div>
 
     <h4 id="notice" class="mdc-typography" style="text-align: center;padding-top: 10%;display: none;">First 3 words predicted will be random</h4>
