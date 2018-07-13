@@ -78,7 +78,6 @@ async function predictNextWord(str) {
     }
   } else {
     notice.style.display = 'block';
-    await loadBtns();
   }
 }
 
