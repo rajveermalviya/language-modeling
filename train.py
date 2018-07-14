@@ -1,16 +1,16 @@
 import os
 
-from keras.callbacks import ModelCheckpoint, TensorBoard
+from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
 
 import CONFIG
 from keras_model import model
-from reader import KerasBatchGenerator, load_data, save_json
+from reader import BatchGenerator, load_data, save_json
 
 train_data, valid_data, _total_words, reversed_dictionary, dictionary = load_data()
 
-train_data_generator = KerasBatchGenerator(
+train_data_generator = BatchGenerator(
     train_data, CONFIG._num_steps, CONFIG._batch_size, _total_words, skip_step=CONFIG._num_steps)
-valid_data_generator = KerasBatchGenerator(
+valid_data_generator = BatchGenerator(
     valid_data, CONFIG._num_steps, CONFIG._batch_size, _total_words, skip_step=CONFIG._num_steps)
 
 

@@ -1,23 +1,24 @@
 import json
 import os
 
-from keras.models import load_model
 from numpy import argmax
+from tensorflow.keras import metrics
+from tensorflow.keras.models import load_model
 
 import CONFIG
-from reader import KerasBatchGenerator, load_data
+from reader import BatchGenerator, load_data
 
-_, _, _total_words, reversed_dictionary, dictionary = load_data()
+_, _, _, reversed_dictionary, dictionary = load_data()
 
 
 _model = load_model(os.path.join(os.getcwd(), 'model', 'model.h5'))
 
 while True:
   input_string = input('\n\nEnter 3 words: \n')
-  input_string = input_string.split()
-  input_string = input_string[3:]
+  _input_string = input_string.split()[-3:]
+  print('last 3 words\t:', _input_string)
   idx = []
-  for i in input_string:
+  for i in _input_string:
     if i == '.':
       i = '<eos>'
     try:
@@ -28,11 +29,7 @@ while True:
       idx.append(dictionary[i])
       pass
 
-  string = ''
-
-  for i in idx:
-    string += reversed_dictionary[i] + ' '
-
+  print('word to indexes\t:', idx)
   prediction = _model.predict([[idx]])
   best = []
 
@@ -41,11 +38,11 @@ while True:
     best.append(argmax_idx)
     prediction[:, CONFIG._num_steps - 1, argmax_idx] = 0.0
 
-  print(best)
+  print('prediction\t:', best)
   for i in best:
     word = reversed_dictionary[i]
     if word == '<eos>':
       word = '.'
     if word == '<unk>':
       word = '<rare word>'
-    print(string + word)
+    print(input_string, word)

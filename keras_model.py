@@ -3,11 +3,11 @@ import os
 import pdb
 
 import tensorflow as tf
-from keras import backend as K
-from keras import metrics
-from keras.layers import (LSTM, Activation, Dense, Dropout, Embedding,
-                          TimeDistributed)
-from keras.models import Sequential
+from tensorflow.keras import backend as K
+from tensorflow.keras import metrics
+from tensorflow.keras.layers import (LSTM, Activation, Dense, Dropout,
+                                     Embedding, TimeDistributed)
+from tensorflow.keras.models import Sequential
 
 
 def model(total_words, hidden_size, num_steps, optimizer='adam'):

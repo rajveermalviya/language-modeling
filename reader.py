@@ -4,7 +4,7 @@ import os
 
 import numpy as np
 import tensorflow as tf
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 
 data_path = os.path.join(os.getcwd(), 'data')
 
@@ -51,7 +51,7 @@ def save_json(dictionary, filename):
     json.dump(dictionary, fp)
 
 
-class KerasBatchGenerator(object):
+class BatchGenerator(object):
 
   def __init__(self, data, num_steps, batch_size, total_words, skip_step=5):
     self.data = data
