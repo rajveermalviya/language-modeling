@@ -1,16 +1,10 @@
-import collections
-import os
-import pdb
-
-import tensorflow as tf
-from tensorflow.keras import backend as K
 from tensorflow.keras import metrics
 from tensorflow.keras.layers import (LSTM, Activation, Dense, Dropout,
                                      Embedding, TimeDistributed)
 from tensorflow.keras.models import Sequential
 
 
-def model(total_words, hidden_size, num_steps, optimizer='adam'):
+def create_model(total_words, hidden_size, num_steps, optimizer='adam'):
   model = Sequential()
   model.add(Embedding(total_words, hidden_size, input_length=num_steps))
   model.add(LSTM(units=hidden_size, return_sequences=True))

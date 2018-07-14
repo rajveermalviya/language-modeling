@@ -1,4 +1,6 @@
-_num_steps = 3
-_batch_size = 20
-_hidden_size = 200
-_num_epochs = 5
+num_steps = 3
+batch_size = 20
+hidden_size = 1500
+num_epochs = 14
+learning_rate = 1.0
+learning_rate_decay = 1 / 1.15

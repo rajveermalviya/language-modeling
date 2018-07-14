@@ -15,7 +15,6 @@ let notice;
 
 
 window.onload = async function (e) {
-
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js')
       .then(function () {
@@ -40,7 +39,6 @@ window.onload = async function (e) {
   surface.forEach(surf => {
     mdc.ripple.MDCRipple.attachTo(surf);
   });
-
   mdcTextField = new mdc.textField.MDCTextField(textField);
   topAppBar = new mdc.topAppBar.MDCTopAppBar(this.document.querySelector('#app-bar'));
   drawer = new mdc.drawer.MDCTemporaryDrawer(this.document.querySelector('#drawer'));
@@ -61,35 +59,38 @@ window.onload = async function (e) {
 
 
 
-async function predictNextWord(str) {
+async function predictNextWord(string) {
   isQuestion = false;
-  str = str.toLowerCase();
-  str = str.split(' ');
-  let input = stringToIndexes(str);
+  string = string.toLowerCase();
+  string = string.split(' ');
+  let input = stringToIndexes(string);
   if (input.length >= 3) {
     notice.style.display = 'none';
     input = input.slice(-3);
     let prediction = await model.predict(tf.tensor([input]));
     prediction = await prediction.data();
     prediction = prediction.slice(20000, 30000);
-    prediction = await indexesToString(prediction, 9);
+    let arrOfString = indexesToString(await doArgMax(prediction, 9));
     for (let i = 0; i < 9; i++) {
-      words[i].innerHTML = prediction[i];
+      words[i].innerHTML = arrOfString[i];
     }
   } else {
     notice.style.display = 'block';
   }
 }
 
-
-async function indexesToString(prediction, numPredictions) {
+async function doArgMax(prediction, numPredictions) {
   let arrOfIndex = [];
-  let arrOfString = [];
   for (let i = 0; i < numPredictions; i++) {
     let argMaxIndex = await tf.argMax(prediction).data();
     arrOfIndex.push(argMaxIndex);
     prediction[argMaxIndex] = 0.0;
   }
+  return arrOfIndex;
+}
+
+function indexesToString(arrOfIndex) {
+  let arrOfString = [];
   arrOfIndex.forEach(i => {
     let word = reversed_dictionary[i];
     if (word === '<eos>') {
@@ -126,8 +127,8 @@ function stringToIndexes(array) {
     if (word === '.' || word === '?') {
       word = '<eos>';
     }
-    if (dictionary[word] == null) {
-      console.error(`The word '${word}' does't exist`);
+    if (dictionary[word] === undefined) {
+      console.log(`The word '${word}' does't exist`);
       word = '<unk>';
       _.push(dictionary[word]);
     } else {
@@ -137,18 +138,18 @@ function stringToIndexes(array) {
   return _;
 }
 
-async function getValues() {
+function getText() {
   mdcTextField.value = mdcTextField.value.toLowerCase();
-  await predictNextWord(mdcTextField.value.trim());
+  predictNextWord(mdcTextField.value.trim());
 }
 
-async function setText(text) {
-  textFieldValue = mdcTextField.foundation_.getValue();
+function setText(text) {
+  let textFieldValue = mdcTextField.foundation_.getValue();
   text = " " + text;
   textFieldValue += text;
   mdcTextField.foundation_.setValue(textFieldValue);
   textInput.selectionStart = textInput.selectionEnd = textInput.value.length;
   textInput.scrollLeft = textInput.scrollWidth;
   mdcTextField.foundation_.activateFocus();
-  await getValues();
+  getText();
 }
