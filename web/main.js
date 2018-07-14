@@ -58,7 +58,6 @@ window.onload = async function (e) {
 };
 
 
-
 async function predictNextWord(string) {
   isQuestion = false;
   string = string.toLowerCase();
@@ -78,6 +77,7 @@ async function predictNextWord(string) {
     notice.style.display = 'block';
   }
 }
+
 
 async function doArgMax(prediction, numPredictions) {
   let arrOfIndex = [];
@@ -138,10 +138,12 @@ function stringToIndexes(array) {
   return _;
 }
 
+
 function getText() {
   mdcTextField.value = mdcTextField.value.toLowerCase();
   predictNextWord(mdcTextField.value.trim());
 }
+
 
 function setText(text) {
   let textFieldValue = mdcTextField.foundation_.getValue();
