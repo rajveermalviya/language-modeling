@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
   <link rel="stylesheet" type="text/css" media="screen" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   <link rel="stylesheet" type="text/css" media="screen" href="main.css">
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs">
+  </script>
   <script src="/web_model/dictionary.js"></script>
   <script src="/web_model/reversed-dictionary.js"></script>
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
@@ -56,10 +57,11 @@
           <span style="color: #e74c3c">&hearts;</span> &NoBreak; by Rajveer
         </p>
       </a>
+    </nav>
   </aside>
 
   <aside class="mdc-drawer custom_drawer mdc-typography mdc-drawer--open">
-    <nav class="mdc-drawer__drawer">
+    <nav class="mdc-drawer__drawer" style="width: 25%;">
       <div class="mdc-drawer__toolbar-spacer"></div>
       <nav class="mdc-drawer__content mdc-list">
         <a class="mdc-list-item ripple-surface mdc-list-item--activated" href="https://github.com/rajveermalviya/language-modeling">
@@ -72,12 +74,13 @@
           <span style="color: #e74c3c">&hearts;</span> &NoBreak; by Rajveer
         </p>
       </a>
+    </nav>
   </aside>
 
   <main class="content">
     <div class="mdc-text-field mdc-text-field--fullwidth" style="display: none;">
-      <input id="text-input" class="mdc-text-field__input" value="welcome to new" type="text" placeholder="Enter atleast 3 word" aria-label="Enter atleast 3 word"
-        autofocus oninput="getText();">
+      <input id="text-input" class="mdc-text-field__input" value="welcome to new" type="text" placeholder="Enter atleast 3 word"
+        aria-label="Enter atleast 3 word" autofocus oninput="getText();">
       <div class="mdc-line-ripple"></div>
     </div>
 
