@@ -6,9 +6,7 @@ var urlsToCache = [
   '/web_model/group3-shard1of1',
   '/web_model/group4-shard1of2',
   '/web_model/group4-shard2of2',
-  '/web_model/model.json',
-  '/web_model/reversed-dictionary.js',
-  '/web_model/dictionary.js'
+  '/web_model/model.json'
 ];
 
 
