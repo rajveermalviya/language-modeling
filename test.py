@@ -13,9 +13,7 @@ _, _, _, indexToString, stringToIndex = load_data()
 model = load_model(os.path.join(os.getcwd(), 'model', 'model.h5'))
 
 
-
-def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS= 10):
-
+def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
   ques_bool = False
   idx, ques_bool = string_to_indexes(string.split(), ques_bool)
 
@@ -82,10 +80,11 @@ def indexes_to_string(array_of_indexes, ques_bool):
 
 
 while True:
-  sentences = predict_next_word(string=input('\n\nEnter atleast 3 words: \n'), NUMBER_OF_PREDICTIONS=10)
+  sentences = predict_next_word(string=input('\n\nEnter atleast 3 words: \n'),
+                                NUMBER_OF_PREDICTIONS=10)
   print('\n')
   if sentences != None:
     count = 0
     for sentence in sentences:
       count += 1
-      print(count, '-',sentence)
+      print(count, '-', sentence)
