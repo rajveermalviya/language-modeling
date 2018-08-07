@@ -20,7 +20,7 @@
   <meta name="twitter:site" content="@RajveerMalviya8" />
   <meta name="twitter:creator" content="@RajveerMalviya8" />
   <script>
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/service-worker.js').then(function () { console.log('RegistrationSuccessful'); }, function (error) { console.log('Registration Failed', error); }); }
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/service-worker.js').then(() => console.log('RegistrationSuccessful')).catch(error => console.log('Registration Failed', error)); }
   </script>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
@@ -28,12 +28,12 @@
   <link rel="stylesheet" type="text/css" media="screen" href="main.css">
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  <script src="main.js"></script>
-
+  <script src="indexToString.js"></script>
+  <script src="stringToIndex.js"></script>
+  <script src="main.min.js"></script>
 </head>
 
 <body class="mdc-typography">
-
   <header class="mdc-top-app-bar mdc-top-app-bar--fixed mdc-top-app-bar--fixed-scrolled" id="app-bar">
     <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" id="progressBar">
       <div class="mdc-linear-progress__buffering-dots"></div>
@@ -52,7 +52,6 @@
       </section>
     </div>
   </header>
-
   <aside class="mdc-drawer mdc-drawer--temporary mdc-typography" id="drawer">
     <nav class="mdc-drawer__drawer">
       <header class="mdc-drawer__header mdc-list-item--activated">
@@ -73,7 +72,6 @@
       </a>
     </nav>
   </aside>
-
   <aside class="mdc-drawer custom_drawer mdc-typography mdc-drawer--open">
     <nav class="mdc-drawer__drawer" style="width: 25%;">
       <div class="mdc-drawer__toolbar-spacer"></div>
@@ -90,20 +88,15 @@
       </a>
     </nav>
   </aside>
-
   <main class="content">
     <div class="mdc-text-field mdc-text-field--fullwidth" style="display: none;">
       <input id="text-input" class="mdc-text-field__input" value="welcome to new" type="text" placeholder="Enter atleast 3 word"
         aria-label="Enter atleast 3 word" autofocus oninput="getText();">
       <div class="mdc-line-ripple"></div>
     </div>
-
-
     <div id="model-loading" class="mdc-typography--overline" style="width: 100%; height: 100%; padding-top: 20%">
       <h1 style="text-align: center;">Model Loading...</h1>
     </div>
-
-
     <div class="btns" style="display: none;">
       <button class="mdc-button ripple-surface button-text" id="word1" onclick="setText(this.innerText);"></button>
       <button class="mdc-button ripple-surface button-text" id="word2" onclick="setText(this.innerText);"></button>
@@ -115,11 +108,8 @@
       <button class="mdc-button ripple-surface button-text" id="word8" onclick="setText(this.innerText);"></button>
       <button class="mdc-button ripple-surface button-text" id="word9" onclick="setText(this.innerText);"></button>
     </div>
-
     <h4 id="notice" class="mdc-typography" style="text-align: center;padding-top: 10%;display: none;">First 3 word's prediction will be random</h4>
-
   </main>
-
 </body>
 
 </html>
