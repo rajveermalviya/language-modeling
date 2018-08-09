@@ -8,3 +8,7 @@ web/google53deefff8815bbe1.html
 firebase.json
 firebase-debug.log
 web/main.min.js
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.debug.yml

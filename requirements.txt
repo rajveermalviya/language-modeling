@@ -1,4 +1,4 @@
-tensoflow
-tensoflowjs
+tensorflow
+tensorflowjs
 h5py
 numpy
