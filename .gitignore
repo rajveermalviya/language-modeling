@@ -12,3 +12,7 @@ web/main.min.js
 Dockerfile
 docker-compose.yml
 docker-compose.debug.yml
+web/node_modules
+web/package-lock.json
+web/dist/bundle.js
+web/tf.js
