@@ -2,12 +2,6 @@
 __pycache__
 model
 venv
-web/web_model
-web/google53deefff8815bbe1.html
-.firebaserc
-firebase.json
-firebase-debug.log
-web/main.min.js
 .dockerignore
 Dockerfile
 docker-compose.yml
@@ -16,3 +10,10 @@ web/node_modules
 web/package-lock.json
 web/dist/bundle.js
 web/tf.js
+web/src/web_model
+web/.firebaserc
+web/firebase.json
+web/firebase-debug.log
+web/src/google53deefff8815bbe1.html
+web/src/404.html
+web/src/bundle.js
