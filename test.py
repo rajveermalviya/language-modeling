@@ -11,6 +11,7 @@ _, _, _, indexToString, stringToIndex = load_data()
 
 
 model = load_model(os.path.join(os.getcwd(), 'model', 'model.h5'))
+print(model.summary())
 
 
 def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
@@ -25,9 +26,9 @@ def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
     best_predictions = []
 
     for _ in range(NUMBER_OF_PREDICTIONS):
-      argmax_idx = argmax(prediction[:, CONFIG.num_steps - 1, :])
+      argmax_idx = argmax(prediction[:, CONFIG.number_of_words - 1, :])
       best_predictions.append(argmax_idx)
-      prediction[:, CONFIG.num_steps - 1, argmax_idx] = 0.0
+      prediction[:, CONFIG.number_of_words - 1, argmax_idx] = 0.0
 
     if verbose:
       print('\nprediction indexes\t:', best_predictions)
