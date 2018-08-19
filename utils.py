@@ -8,6 +8,8 @@ from tensorflow.keras.utils import to_categorical
 
 data_path = os.path.join(os.getcwd(), 'data')
 
+def load_dictionary(path):
+  return json.loads(open(path).read())
 
 def read_words(filename):
   with tf.gfile.GFile(filename, 'r') as f:

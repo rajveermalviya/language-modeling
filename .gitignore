@@ -17,3 +17,5 @@ web/firebase-debug.log
 web/src/google53deefff8815bbe1.html
 web/src/404.html
 web/src/bundle.js
+data/indexToString.json
+data/stringToIndex.json

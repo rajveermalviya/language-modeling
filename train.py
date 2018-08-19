@@ -6,7 +6,7 @@ import CONFIG
 from keras_model import create_model
 from utils import BatchGenerator, load_data, save_json
 
-train_data, valid_data, total_words, reversed_dictionary, dictionary = load_data()
+train_data, valid_data, total_words, indexToString, stringToIndex = load_data()
 
 train_data_generator = BatchGenerator(
     train_data, CONFIG.number_of_words, CONFIG.batch_size, total_words, skip_step=CONFIG.number_of_words)
@@ -23,11 +23,11 @@ print(model.summary())
 checkpointer = ModelCheckpoint(filepath=os.path.join(
     os.getcwd(), 'model', 'checkpoint', 'model-{epoch:02d}.h5'), verbose=1)
 
-save_json(dictionary, os.path.join(
-    os.getcwd(), 'web', 'web_model', 'dictionary.json'))
+save_json(stringToIndex, os.path.join(
+    os.getcwd(), 'data', 'stringToIndex.json'))
 
-save_json(reversed_dictionary, os.path.join(
-    os.getcwd(), 'web', 'web_model', 'reversed-dictionary.json'))
+save_json(indexToString, os.path.join(
+    os.getcwd(), 'data', 'indexToString.json'))
 
 model.fit_generator(
     generator=train_data_generator.generate(),

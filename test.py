@@ -5,23 +5,25 @@ from tensorflow.keras import metrics
 from tensorflow.keras.models import load_model
 
 import CONFIG
-from utils import BatchGenerator, load_data
+from utils import BatchGenerator, load_data, load_dictionary
 
-_, _, _, indexToString, stringToIndex = load_data()
-
+indexToString = load_dictionary(os.path.join(
+    os.getcwd(), 'data', 'indexToString.json'))
+stringToIndex = load_dictionary(os.path.join(
+    os.getcwd(), 'data', 'stringToIndex.json'))
 
 model = load_model(os.path.join(os.getcwd(), 'model', 'model.h5'))
-print(model.summary())
 
 
 def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
   ques_bool = False
   idx, ques_bool = string_to_indexes(string.split(), ques_bool)
 
-  if len(idx) >= 3:
+  if len(idx) >= CONFIG.number_of_words:
     if verbose:
-      print('\nindexes of last 3 words\t:', idx[-3:])
-    prediction = model.predict([[idx[-3:]]])
+      print('\nindexes of last ', CONFIG.number_of_words,
+            'words\t:', idx[-CONFIG.number_of_words:])
+    prediction = model.predict([[idx[-CONFIG.number_of_words:]]])
 
     best_predictions = []
 
@@ -39,7 +41,7 @@ def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
       sentences.append(string + ' ' + word)
     return sentences
   else:
-    print('\n\nPlease enter atleast 3 words.\n')
+    print('\n\nPlease enter atleast', CONFIG.number_of_words, ' words.\n')
 
 
 def string_to_indexes(array_of_string, ques_bool):
@@ -67,7 +69,7 @@ def indexes_to_string(array_of_indexes, ques_bool):
   array_of_strings = []
 
   for index in array_of_indexes:
-    word = indexToString[index]
+    word = indexToString[str(index)]
     if word == '<eos>':
       if ques_bool == True:
         word = '?'
@@ -81,11 +83,11 @@ def indexes_to_string(array_of_indexes, ques_bool):
 
 
 while True:
-  sentences = predict_next_word(string=input('\n\nEnter atleast 3 words: \n'),
+  sentences = predict_next_word(string=input('\n\nEnter atleast ' + str(CONFIG.number_of_words) + ' words: \n'),
                                 NUMBER_OF_PREDICTIONS=10)
   print('\n')
   if sentences != None:
     count = 0
     for sentence in sentences:
       count += 1
-      print(count, '-', sentence)
+      print(count, '\t-', sentence)
