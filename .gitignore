@@ -19,3 +19,4 @@ web/src/404.html
 web/src/bundle.js
 data/indexToString.json
 data/stringToIndex.json
+web/src/bundle.min.js

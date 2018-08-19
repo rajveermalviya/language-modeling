@@ -1,5 +1,6 @@
 var CACHE_NAME = 'nxtWord';
 var urlsToCache = [
+  '/bundle.js',
   '/web_model/group1-shard1of2',
   '/web_model/group1-shard2of2',
   '/web_model/group2-shard1of1',
@@ -21,9 +22,10 @@ self.addEventListener('install', function (event) {
   );
 });
 
-self.addEventListener('activate', function (e) {
+
+self.addEventListener('activate', function (event) {
   console.log('[ServiceWorker] Activate');
-  e.waitUntil(
+  event.waitUntil(
     caches.keys().then(function (keyList) {
       return Promise.all(keyList.map(function (key) {
         if (key !== CACHE_NAME) {

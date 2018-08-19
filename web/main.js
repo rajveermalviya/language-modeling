@@ -1,19 +1,12 @@
 import "babel-polyfill";
-
-import {
-  loadModel,
-  argMax,
-  tensor
-} from "./tf";
-
-import {
-  stringToIndex
-} from "./stringToIndex";
-
-import {
-  indexToString
-} from "./indexToString";
-
+import { MDCTopAppBar } from "@material/top-app-bar";
+import { MDCTemporaryDrawer } from "@material/drawer";
+import { MDCRipple } from "@material/ripple";
+import { MDCTextField } from "@material/textfield";
+import { loadModel } from "@tensorflow/tfjs-layers";
+import { tensor,argMax } from "@tensorflow/tfjs-core";
+import { stringToIndex } from "./stringToIndex";
+import { indexToString } from "./indexToString";
 
 window.onload = async function () {
   let words = [];
@@ -36,13 +29,13 @@ window.onload = async function () {
   btns.style.display = "none";
   inputTextField.style.display = "none";
 
-  rippleSurface.forEach(i => mdc.ripple.MDCRipple.attachTo(i));
+  rippleSurface.forEach(i => MDCRipple.attachTo(i));
 
-  let mdcTextField = new mdc.textField.MDCTextField(inputTextField);
-  mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector("#app-bar"));
-  let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector("#drawer"));
+  let mdcTextField = new MDCTextField(inputTextField);
+  MDCTopAppBar.attachTo(document.querySelector("#app-bar"));
+  let drawer = new MDCTemporaryDrawer(document.querySelector("#drawer"));
 
-  document.querySelector("#menu").addEventListener("click", () => drawer.open = true);
+  document.querySelector("#menu").addEventListener("click", () => { drawer.open = true;});
 
   const model = await loadModel("/web_model/model.json");
 

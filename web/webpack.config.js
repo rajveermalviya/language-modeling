@@ -3,15 +3,17 @@ module.exports = {
   mode: "production",
   entry: "./main.js",
   output: {
-    filename: "./src/bundle.js"
+    path: __dirname + '/src',
+    filename: "bundle.js"
   },
   module: {
     rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
       query: {
-        presets: ['env']
+        "presets": ['env']
       }
     }]
+  
   }
 };
