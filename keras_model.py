@@ -7,7 +7,7 @@ from tensorflow.keras.models import Sequential
 def create_model(total_words, hidden_size, num_steps, optimizer='adam'):
   model = Sequential()
 
-  # Embedding layer
+  # Embedding layer / Input layer
   model.add(Embedding(total_words, hidden_size, input_length=num_steps))
 
   # 4 LSTM layers

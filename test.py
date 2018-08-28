@@ -15,7 +15,7 @@ stringToIndex = load_dictionary(os.path.join(
 model = load_model(os.path.join(os.getcwd(), 'model', 'model.h5'))
 
 
-def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
+def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=1):
   ques_bool = False
   idx, ques_bool = string_to_indexes(string.split(), ques_bool)
 
@@ -29,6 +29,7 @@ def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
 
     for _ in range(NUMBER_OF_PREDICTIONS):
       argmax_idx = argmax(prediction[:, CONFIG.number_of_words - 1, :])
+      print(prediction[:, CONFIG.number_of_words - 1, argmax_idx])
       best_predictions.append(argmax_idx)
       prediction[:, CONFIG.number_of_words - 1, argmax_idx] = 0.0
 
@@ -42,7 +43,6 @@ def predict_next_word(string, verbose=True, NUMBER_OF_PREDICTIONS=10):
     return sentences
   else:
     print('\n\nPlease enter atleast', CONFIG.number_of_words, ' words.\n')
-
 
 def string_to_indexes(array_of_string, ques_bool):
   array_of_indexes = []
@@ -58,7 +58,8 @@ def string_to_indexes(array_of_string, ques_bool):
     try:
       array_of_indexes.append(stringToIndex[word])
     except:
-      print('Word ', word, ' does not exist')
+      print("Word ", word,
+            " does not exist in the vocabulary!\nReplacing it with '<unk>'")
       word = '<unk>'
       array_of_indexes.append(stringToIndex[word])
       pass
@@ -75,7 +76,7 @@ def indexes_to_string(array_of_indexes, ques_bool):
         word = '?'
       else:
         word = '.'
-    if word == 'N':
+    if word == 'N': # if word is a number.
       #TODO
       pass
     array_of_strings.append(word)
@@ -84,7 +85,7 @@ def indexes_to_string(array_of_indexes, ques_bool):
 
 while True:
   sentences = predict_next_word(string=input('\n\nEnter atleast ' + str(CONFIG.number_of_words) + ' words: \n'),
-                                NUMBER_OF_PREDICTIONS=10)
+                                NUMBER_OF_PREDICTIONS=1)
   print('\n')
   if sentences != None:
     count = 0

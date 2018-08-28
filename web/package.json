@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "This is machine learning model that is trained to predict next word in the sequence. Model is defined in keras and then converted to tensorflowjs model using tfjs_converter.",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "serve": "cd src & http-server -o"
   },
   "repository": {
     "type": "git",

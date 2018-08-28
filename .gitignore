@@ -8,8 +8,6 @@ docker-compose.yml
 docker-compose.debug.yml
 web/node_modules
 web/package-lock.json
-web/dist/bundle.js
-web/tf.js
 web/src/web_model
 web/.firebaserc
 web/firebase.json
@@ -19,4 +17,4 @@ web/src/404.html
 web/src/bundle.js
 data/indexToString.json
 data/stringToIndex.json
-web/src/bundle.min.js
+web/.firebase

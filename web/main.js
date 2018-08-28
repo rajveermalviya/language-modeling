@@ -1,32 +1,37 @@
-import "babel-polyfill";
-import { MDCTopAppBar } from "@material/top-app-bar";
 import { MDCTemporaryDrawer } from "@material/drawer";
 import { MDCRipple } from "@material/ripple";
 import { MDCTextField } from "@material/textfield";
+import { MDCTopAppBar } from "@material/top-app-bar";
+import { argMax, tensor } from "@tensorflow/tfjs-core";
 import { loadModel } from "@tensorflow/tfjs-layers";
-import { tensor,argMax } from "@tensorflow/tfjs-core";
-import { stringToIndex } from "./stringToIndex";
+import "babel-polyfill";
 import { indexToString } from "./indexToString";
+import { stringToIndex } from "./stringToIndex";
 
-window.onload = async function () {
-  let words = [];
+//TODO (if changed in the original model config)
+const NUMBER_OF_WORDS = 3;
+const forSlicingPredictionArray_A = (NUMBER_OF_WORDS - 1) * 1e4;
+const forSlicingPredictionArray_B = NUMBER_OF_WORDS * 1e4;
+
+window.onload = async () => {
+  let predictedWordsButtons = [];
   let isQuestion = false;
   let randomNumber = [];
 
   const inputTextField = document.querySelector(".mdc-text-field");
   const notice = document.querySelector("#notice");
   const textInput = document.querySelector("#text-input");
-  const btns = document.querySelector(".btns");
-  const modelLoading = document.querySelector("#model-loading");
+  const btnsDiv = document.querySelector(".btns");
+  const modelLoadingNotice = document.querySelector("#model-loading");
   const progressBar = document.querySelector("#progressBar");
   const rippleSurface = document.querySelectorAll(".ripple-surface");
 
   for (let i = 0; i < 9; i++) {
-    words.push(document.querySelector(`#word${i + 1}`));
+    predictedWordsButtons.push(document.querySelector(`#word${i + 1}`));
   }
 
-  modelLoading.style.display = "block";
-  btns.style.display = "none";
+  modelLoadingNotice.style.display = "block";
+  btnsDiv.style.display = "none";
   inputTextField.style.display = "none";
 
   rippleSurface.forEach(i => MDCRipple.attachTo(i));
@@ -35,43 +40,32 @@ window.onload = async function () {
   MDCTopAppBar.attachTo(document.querySelector("#app-bar"));
   let drawer = new MDCTemporaryDrawer(document.querySelector("#drawer"));
 
-  document.querySelector("#menu").addEventListener("click", () => { drawer.open = true;});
+  document.querySelector("#menu").addEventListener("click", () => {
+    drawer.open = true;
+  });
 
   const model = await loadModel("/web_model/model.json");
-
-  notice.style.display = "block";
-  modelLoading.style.display = "none";
-  let predictionString = await predictNextWord(mdcTextField.value.trim(), 9);
-  for (let i = 0; i < 9; i++) {
-    words[i].innerHTML = predictionString[i];
-  }
-  textInput.selectionStart = textInput.selectionEnd = textInput.value.length;
-  textInput.scrollLeft = textInput.scrollWidth;
-  mdcTextField.foundation_.activateFocus();
-  btns.style.display = "grid";
-  inputTextField.style.display = "block";
-  progressBar.style.display = "none";
 
   /**
    * Predict next word
    * @param {string} string Input String.
    * @param {number} numPrediction Total number of prediction to get.
    */
-  async function predictNextWord(string, numPrediction) {
+  window.predictNextWord = async (string, numPrediction) => {
     isQuestion = false;
     string = string.toLowerCase().split(" ");
     let indexes = stringToIndexes(string);
-    if (indexes.length >= 3) {
+    if (indexes.length >= NUMBER_OF_WORDS) {
       notice.style.display = "none";
-      indexes = indexes.slice(-3);
+      indexes = indexes.slice(-NUMBER_OF_WORDS);
       let prediction = await model.predict(tensor([indexes]));
-      prediction = (await prediction.data()).slice(2e4, 3e4);
+      prediction = (await prediction.data()).slice(forSlicingPredictionArray_A, forSlicingPredictionArray_B);
       let predictionString = indexesToString(await doArgMax(prediction, numPrediction));
       return predictionString;
     } else {
       notice.style.display = "block";
     }
-  }
+  };
 
   /**
    * Get the maximum value index from the array.
@@ -79,7 +73,7 @@ window.onload = async function () {
    * @param {number} numPrediction Top {numPrediction} indexes. e.g. top 9 predictions in this example.
    * @returns {number[]} array of the top .
    */
-  async function doArgMax(prediction, numPrediction) {
+  const doArgMax = async (prediction, numPrediction) => {
     let argmaxIndexes = [];
     for (let i = 0; i < numPrediction; i++) {
       let argmaxIndex = await argMax(prediction).data();
@@ -87,7 +81,7 @@ window.onload = async function () {
       prediction[argmaxIndex] = 0;
     }
     return argmaxIndexes;
-  }
+  };
 
   /**
    * Maps indexes of the model prediction to a string array using the predefined ditionary.
@@ -95,7 +89,7 @@ window.onload = async function () {
    * @param {number[]} arrOfIndexes argMax indexes array.
    * @returns {string[]} Mapped strings array.
    */
-  function indexesToString(arrOfIndexes) {
+  const indexesToString = arrOfIndexes => {
     let arrOfStrings = [];
     arrOfIndexes.forEach(index => {
       let word = indexToString[index];
@@ -116,7 +110,7 @@ window.onload = async function () {
       arrOfStrings.push(word);
     });
     return arrOfStrings;
-  }
+  };
 
   /**
    * Maps the input string to a index array using the predefined ditionary.
@@ -124,7 +118,7 @@ window.onload = async function () {
    * @param {string[]} arrOfString The input string array seperated by spaces.
    * @returns {number[]} Mapped indexes array for the model prediction.
    */
-  function stringToIndexes(arrOfString) {
+  const stringToIndexes = arrOfString => {
     let arrOfIndexes = [];
     arrOfString.forEach(word => {
       if (word === "rareword") {
@@ -147,22 +141,41 @@ window.onload = async function () {
       }
     });
     return arrOfIndexes;
-  }
+  };
 
-  window.getText = async function () {
+  window.getText = async () => {
     mdcTextField.value = mdcTextField.value.toLowerCase();
-    let predictionString = await predictNextWord(mdcTextField.value.trim(), 9);
+    let predictionString = await window.predictNextWord(mdcTextField.value.trim(), 9);
     for (let i = 0; i < 9; i++) {
-      words[i].innerHTML = predictionString[i];
+      predictedWordsButtons[i].innerHTML = predictionString[i];
     }
   };
 
-  window.setText = function (string) {
+  window.setText = string => {
+    predictedWordsButtons.forEach((element) => {
+      element.disabled = true;
+    });
     let textFieldValue = mdcTextField.foundation_.getValue();
     mdcTextField.foundation_.setValue(textFieldValue += string = " " + string);
     textInput.selectionStart = textInput.selectionEnd = textInput.value.length;
     textInput.scrollLeft = textInput.scrollWidth;
     mdcTextField.foundation_.activateFocus();
     window.getText();
+    predictedWordsButtons.forEach((element) => {
+      element.disabled = false;
+    });
   };
+
+  notice.style.display = "block";
+  modelLoadingNotice.style.display = "none";
+  let predictionString = await window.predictNextWord(mdcTextField.value.trim(), 9);
+  for (let i = 0; i < 9; i++) {
+    predictedWordsButtons[i].innerHTML = predictionString[i];
+  }
+  textInput.selectionStart = textInput.selectionEnd = textInput.value.length;
+  textInput.scrollLeft = textInput.scrollWidth;
+  mdcTextField.foundation_.activateFocus();
+  btnsDiv.style.display = "grid";
+  inputTextField.style.display = "block";
+  progressBar.style.display = "none";
 };
