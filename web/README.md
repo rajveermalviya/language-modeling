@@ -4,12 +4,12 @@
 
 First of all it is necessary that you already have :
 
-* tensorflowjs model in the ```/web/src/web_model``` directory
+* tensorflowjs model in the `/web/dist/web_model` directory
 * nodejs & npm installed
 
 ## Usage
 
-Ensure that you are in the ```/web``` directory then run :
+Ensure that you are in the `/web` directory then run :
 
 ```powershell
 npm install
@@ -21,9 +21,9 @@ Once the dependencies are installed run :
 npm run build
 ```
 
-Then you will notice that ```bundle.js``` is created in ```/src``` directory.
+Then you will notice that `main.bundle.js` and other chunk files are built in `/dist` directory.
 
-To serve the ```/src``` directory to the local host run :
+To serve the `/dist` directory to a localhost run :
 
 ```powershell
 npm run serve
