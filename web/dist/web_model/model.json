@@ -1,0 +1,241 @@
+{
+    "modelTopology": {
+        "keras_version": "2.1.6",
+        "backend": "tensorflow",
+        "model_config": {
+            "class_name": "Sequential",
+            "config": [{
+                "class_name": "Embedding",
+                "config": {
+                    "name": "embedding_3",
+                    "trainable": true,
+                    "batch_input_shape": [null, 3],
+                    "dtype": "float32",
+                    "input_dim": 10000,
+                    "output_dim": 200,
+                    "embeddings_initializer": {
+                        "class_name": "RandomUniform",
+                        "config": {
+                            "minval": -0.05,
+                            "maxval": 0.05,
+                            "seed": null
+                        }
+                    },
+                    "embeddings_regularizer": null,
+                    "activity_regularizer": null,
+                    "embeddings_constraint": null,
+                    "mask_zero": false,
+                    "input_length": 3
+                }
+            }, {
+                "class_name": "LSTM",
+                "config": {
+                    "name": "lstm_5",
+                    "trainable": true,
+                    "return_sequences": true,
+                    "return_state": false,
+                    "go_backwards": false,
+                    "stateful": false,
+                    "unroll": false,
+                    "units": 200,
+                    "activation": "tanh",
+                    "recurrent_activation": "hard_sigmoid",
+                    "use_bias": true,
+                    "kernel_initializer": {
+                        "class_name": "VarianceScaling",
+                        "config": {
+                            "scale": 1.0,
+                            "mode": "fan_avg",
+                            "distribution": "uniform",
+                            "seed": null
+                        }
+                    },
+                    "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                            "gain": 1.0,
+                            "seed": null
+                        }
+                    },
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "unit_forget_bias": true,
+                    "kernel_regularizer": null,
+                    "recurrent_regularizer": null,
+                    "bias_regularizer": null,
+                    "activity_regularizer": null,
+                    "kernel_constraint": null,
+                    "recurrent_constraint": null,
+                    "bias_constraint": null,
+                    "dropout": 0.0,
+                    "recurrent_dropout": 0.0,
+                    "implementation": 1
+                }
+            }, {
+                "class_name": "LSTM",
+                "config": {
+                    "name": "lstm_6",
+                    "trainable": true,
+                    "return_sequences": true,
+                    "return_state": false,
+                    "go_backwards": false,
+                    "stateful": false,
+                    "unroll": false,
+                    "units": 200,
+                    "activation": "tanh",
+                    "recurrent_activation": "hard_sigmoid",
+                    "use_bias": true,
+                    "kernel_initializer": {
+                        "class_name": "VarianceScaling",
+                        "config": {
+                            "scale": 1.0,
+                            "mode": "fan_avg",
+                            "distribution": "uniform",
+                            "seed": null
+                        }
+                    },
+                    "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                            "gain": 1.0,
+                            "seed": null
+                        }
+                    },
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "unit_forget_bias": true,
+                    "kernel_regularizer": null,
+                    "recurrent_regularizer": null,
+                    "bias_regularizer": null,
+                    "activity_regularizer": null,
+                    "kernel_constraint": null,
+                    "recurrent_constraint": null,
+                    "bias_constraint": null,
+                    "dropout": 0.0,
+                    "recurrent_dropout": 0.0,
+                    "implementation": 1
+                }
+            }, {
+                "class_name": "Dropout",
+                "config": {
+                    "name": "dropout_3",
+                    "trainable": true,
+                    "rate": 0.5,
+                    "noise_shape": null,
+                    "seed": null
+                }
+            }, {
+                "class_name": "TimeDistributed",
+                "config": {
+                    "name": "time_distributed_3",
+                    "trainable": true,
+                    "layer": {
+                        "class_name": "Dense",
+                        "config": {
+                            "name": "dense_3",
+                            "trainable": true,
+                            "units": 10000,
+                            "activation": "linear",
+                            "use_bias": true,
+                            "kernel_initializer": {
+                                "class_name": "VarianceScaling",
+                                "config": {
+                                    "scale": 1.0,
+                                    "mode": "fan_avg",
+                                    "distribution": "uniform",
+                                    "seed": null
+                                }
+                            },
+                            "bias_initializer": {
+                                "class_name": "Zeros",
+                                "config": {}
+                            },
+                            "kernel_regularizer": null,
+                            "bias_regularizer": null,
+                            "activity_regularizer": null,
+                            "kernel_constraint": null,
+                            "bias_constraint": null
+                        }
+                    }
+                }
+            }, {
+                "class_name": "Activation",
+                "config": {
+                    "name": "activation_3",
+                    "trainable": true,
+                    "activation": "softmax"
+                }
+            }]
+        },
+        "training_config": {
+            "optimizer_config": {
+                "class_name": "Adam",
+                "config": {
+                    "lr": 0.0010000000474974513,
+                    "beta_1": 0.8999999761581421,
+                    "beta_2": 0.9990000128746033,
+                    "decay": 0.0,
+                    "epsilon": 1e-07,
+                    "amsgrad": false
+                }
+            },
+            "loss": "categorical_crossentropy",
+            "metrics": ["categorical_accuracy"],
+            "sample_weight_mode": null,
+            "loss_weights": null
+        }
+    },
+    "weightsManifest": [{
+        "paths": ["group1-shard1of2", "group1-shard2of2"],
+        "weights": [{
+            "name": "embedding_3/embeddings",
+            "shape": [10000, 200],
+            "dtype": "float32"
+        }]
+    }, {
+        "paths": ["group2-shard1of1"],
+        "weights": [{
+            "name": "lstm_5/kernel",
+            "shape": [200, 800],
+            "dtype": "float32"
+        }, {
+            "name": "lstm_5/recurrent_kernel",
+            "shape": [200, 800],
+            "dtype": "float32"
+        }, {
+            "name": "lstm_5/bias",
+            "shape": [800],
+            "dtype": "float32"
+        }]
+    }, {
+        "paths": ["group3-shard1of1"],
+        "weights": [{
+            "name": "lstm_6/kernel",
+            "shape": [200, 800],
+            "dtype": "float32"
+        }, {
+            "name": "lstm_6/recurrent_kernel",
+            "shape": [200, 800],
+            "dtype": "float32"
+        }, {
+            "name": "lstm_6/bias",
+            "shape": [800],
+            "dtype": "float32"
+        }]
+    }, {
+        "paths": ["group4-shard1of2", "group4-shard2of2"],
+        "weights": [{
+            "name": "time_distributed_3/kernel",
+            "shape": [200, 10000],
+            "dtype": "float32"
+        }, {
+            "name": "time_distributed_3/bias",
+            "shape": [10000],
+            "dtype": "float32"
+        }]
+    }]
+}
