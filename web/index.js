@@ -55,8 +55,9 @@ window.onload = async () => {
     drawer.open = true;
   });
 
-  const tf = await import(/* webpackChunkName: "tensorflow" */
-  /* webpackPrefetch: true */
+  const tf = await import(
+    /* webpackChunkName: "tensorflow" */
+    /* webpackPrefetch: true */
   '@tensorflow/tfjs');
 
   const model = await tf.loadModel('/web_model/model.json');
@@ -209,4 +210,10 @@ window.onload = async () => {
   btnsDiv.style.display = 'grid';
   inputTextField.style.display = 'block';
   progressBar.style.display = 'none';
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .catch(error => console.log('Registration Failed', error));
+  }
 };
