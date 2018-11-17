@@ -1,10 +1,6 @@
 import '@babel/polyfill';
-import {
-  indexToString
-} from './indexToString';
-import {
-  stringToIndex
-} from './stringToIndex';
+import { indexToString } from './indexToString';
+import { stringToIndex } from './stringToIndex';
 
 // TODO: (if changed in the original model config)
 const NUMBER_OF_WORDS = 3;
@@ -30,26 +26,25 @@ window.onload = async () => {
   btnsDiv.style.display = 'none';
   inputTextField.style.display = 'none';
 
-
   const MDCRipple = (await import(
     /* webpackChunkName: "MDCRipple" */
     /* webpackPrefetch: true */
-    '@material/ripple')).MDCRipple;
+  '@material/ripple')).MDCRipple;
 
   const MDCTextField = (await import(
     /* webpackChunkName: "MDCTextField" */
     /* webpackPrefetch: true */
-    '@material/textfield')).MDCTextField;
+  '@material/textfield')).MDCTextField;
 
   const MDCTopAppBar = (await import(
     /* webpackChunkName: "MDCTopAppBar" */
     /* webpackPrefetch: true */
-    '@material/top-app-bar')).MDCTopAppBar;
+  '@material/top-app-bar')).MDCTopAppBar;
 
   const MDCTemporaryDrawer = (await import(
     /* webpackChunkName: "MDCTemporaryDrawer" */
     /* webpackPrefetch: true */
-    '@material/drawer')).MDCTemporaryDrawer;
+  '@material/drawer')).MDCTemporaryDrawer;
 
   rippleSurface.forEach(i => MDCRipple.attachTo(i));
   let mdcTextField = new MDCTextField(inputTextField);
@@ -60,10 +55,9 @@ window.onload = async () => {
     drawer.open = true;
   });
 
-  const tf = await import(
-    /* webpackChunkName: "tensorflow" */
-    /* webpackPrefetch: true */
-    '@tensorflow/tfjs');
+  const tf = await import(/* webpackChunkName: "tensorflow" */
+  /* webpackPrefetch: true */
+  '@tensorflow/tfjs');
 
   const model = await tf.loadModel('/web_model/model.json');
 
@@ -80,8 +74,13 @@ window.onload = async () => {
       notice.style.display = 'none';
       indexes = indexes.slice(-NUMBER_OF_WORDS);
       const prediction = await model.predict(tf.tensor([indexes]));
-      const lastWordPrediction = (await prediction.data()).slice((NUMBER_OF_WORDS - 1) * 1e4, NUMBER_OF_WORDS * 1e4);
-      let predictionString = indexToWordConverter(await doArgMax(lastWordPrediction, numPrediction));
+      const lastWordPrediction = (await prediction.data()).slice(
+        (NUMBER_OF_WORDS - 1) * 1e4,
+        NUMBER_OF_WORDS * 1e4
+      );
+      let predictionString = indexToWordConverter(
+        await doArgMax(lastWordPrediction, numPrediction)
+      );
       return predictionString;
     } else {
       notice.style.display = 'block';
@@ -147,7 +146,17 @@ window.onload = async () => {
       if (randomNumber.includes(Number(word))) {
         word = 'N';
       }
-      if ('what' === word || 'why' === word || 'who' === word || 'how' === word || 'whose' === word || 'when' === word || 'whom' === word || 'which' === word || 'where' === word) {
+      if (
+        'what' === word ||
+        'why' === word ||
+        'who' === word ||
+        'how' === word ||
+        'whose' === word ||
+        'when' === word ||
+        'whom' === word ||
+        'which' === word ||
+        'where' === word
+      ) {
         isQuestion = true;
       }
       if (word === '.' || word === '?') {
@@ -174,16 +183,16 @@ window.onload = async () => {
   };
 
   window.setText = string => {
-    predictedWordsButtons.forEach((element) => {
+    predictedWordsButtons.forEach(element => {
       element.disabled = true;
     });
     let textFieldValue = mdcTextField.foundation_.getValue();
-    mdcTextField.foundation_.setValue(textFieldValue += string = ' ' + string);
+    mdcTextField.foundation_.setValue((textFieldValue += string = ' ' + string));
     textInput.selectionStart = textInput.selectionEnd = textInput.value.length;
     textInput.scrollLeft = textInput.scrollWidth;
     mdcTextField.foundation_.activateFocus();
     window.getText();
-    predictedWordsButtons.forEach((element) => {
+    predictedWordsButtons.forEach(element => {
       element.disabled = false;
     });
   };

@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - '8'
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - '$HOME/.npm'
+
+before_install:
+  - cd web
+
+script:
+  - npm run build
+
+before_deploy:
+  - npm install -g firebase-tools
+
+deploy:
+  provider: firebase
+  skip_cleanup: true
+
+notifications:
+  email:
+    on_failure: change
+    on_success: change

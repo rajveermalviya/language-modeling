@@ -18,19 +18,19 @@
   "homepage": "https://github.com/rajveermalviya/language-modeling#readme",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@material/drawer": "^0.38.0",
-    "@material/ripple": "^0.38.1",
-    "@material/textfield": "^0.38.1",
-    "@material/top-app-bar": "^0.38.1",
-    "@tensorflow/tfjs": "^0.12.7"
+    "@material/drawer": "~0.38.0",
+    "@material/ripple": "~0.38.1",
+    "@material/textfield": "~0.38.1",
+    "@material/top-app-bar": "~0.38.1",
+    "@tensorflow/tfjs": "^0.13.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.1.6",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "babel-loader": "^8.0.2",
+    "@babel/preset-env": "^7.1.6",
+    "babel-loader": "^8.0.4",
     "http-server": "^0.11.1",
-    "webpack": "^4.17.2",
-    "webpack-cli": "^3.1.0"
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
   }
 }
