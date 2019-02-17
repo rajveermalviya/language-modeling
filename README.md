@@ -7,9 +7,9 @@ Model is defined in keras and then converted to tensorflowjs model using tfjs_co
 
 ## Dependencies
 
-* [keras](https://github.com/keras-team/keras)
-* [tensorflow](https://www.tensorflow.org/)
-* [tensorflowjs_converter](https://js.tensorflow.org/) (for web deployment)
+- [keras](https://github.com/keras-team/keras)
+- [tensorflow](https://www.tensorflow.org/)
+- [tensorflowjs_converter](https://js.tensorflow.org/) (for web deployment)
 
 To install all dependencies at once use:
 

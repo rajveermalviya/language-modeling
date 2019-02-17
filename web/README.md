@@ -4,8 +4,8 @@
 
 First of all it is necessary that you already have :
 
-* tensorflowjs model in the `/web/dist/web_model` directory
-* nodejs & npm installed
+- tensorflowjs model in the `/web/dist/web_model` directory
+- nodejs & npm installed
 
 ## Usage
 
